@@ -1,6 +1,6 @@
 # AI Quiz
 
-A premium, luxe-themed web application that tests users with random multiple-choice questions about Artificial Intelligence. Built with Node.js, Express, and SQLite.
+A premium, luxe-themed web application that tests users with random multiple-choice questions about Artificial Intelligence. Built with Node.js, Express, and PostgreSQL.
 
 ## Features
 
@@ -15,7 +15,7 @@ A premium, luxe-themed web application that tests users with random multiple-cho
 | Layer     | Technology       |
 |-----------|------------------|
 | Backend   | Node.js, Express |
-| Database  | SQLite (better-sqlite3) |
+| Database  | PostgreSQL (pg)  |
 | Auth      | bcryptjs, express-session |
 | Frontend  | Vanilla HTML, CSS, JS (SPA) |
 
@@ -24,6 +24,19 @@ A premium, luxe-themed web application that tests users with random multiple-cho
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
+- [PostgreSQL](https://www.postgresql.org/) (v14 or higher)
+
+### Database Setup
+
+```bash
+# Create the database
+createdb ai_quiz
+
+# Or with a specific user
+psql -U postgres -c "CREATE DATABASE ai_quiz;"
+```
+
+Tables are auto-created when the server starts.
 
 ### Installation
 
@@ -35,8 +48,11 @@ cd AI-Quiz
 # Install dependencies
 npm install
 
-# Start the server
+# Start the server (uses postgresql://localhost:5432/ai_quiz by default)
 node server.js
+
+# Or with a custom database URL
+DATABASE_URL=postgresql://user:password@host:5432/ai_quiz node server.js
 ```
 
 The app will be running at **http://localhost:3000**.
@@ -55,7 +71,7 @@ cloudflared tunnel --url http://localhost:3000
 AI-Quiz/
 ├── server.js            # Express backend (API routes, auth, quiz logic)
 ├── package.json         # Dependencies
-├── .gitignore           # Ignores node_modules, quiz.db, .env
+├── .gitignore           # Ignores node_modules, .env
 └── public/
     ├── index.html       # Single-page app HTML
     ├── app.js           # Frontend logic (auth, quiz, admin)
@@ -72,12 +88,20 @@ const ADMIN_EMAILS = ['ankit@big-bang.ai'];
 
 ## Database
 
-User data and quiz attempts are stored in a local `quiz.db` SQLite file (auto-created on first run). To inspect the database:
+User data and quiz attempts are stored in PostgreSQL. To inspect the database:
 
 ```bash
-sqlite3 quiz.db "SELECT * FROM users;"
-sqlite3 quiz.db "SELECT * FROM quiz_attempts;"
+psql ai_quiz -c "SELECT * FROM users;"
+psql ai_quiz -c "SELECT * FROM quiz_attempts;"
 ```
+
+## Environment Variables
+
+| Variable       | Default                                  | Description          |
+|----------------|------------------------------------------|----------------------|
+| `DATABASE_URL` | `postgresql://localhost:5432/ai_quiz`    | PostgreSQL connection string |
+| `SESSION_SECRET` | Auto-generated                         | Session encryption key |
+| `PORT`         | `3000`                                   | Server port          |
 
 ## License
 
