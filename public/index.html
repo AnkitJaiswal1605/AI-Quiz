@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Luxe Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <!-- Navigation -->
+  <nav id="navbar" class="hidden">
+    <div class="nav-inner">
+      <div class="logo">AI<span class="gold">Luxe</span></div>
+      <div class="nav-right">
+        <span id="nav-user" class="nav-user"></span>
+        <button id="btn-admin" class="btn-nav btn-admin-nav">Admin</button>
+        <button id="btn-logout" class="btn-nav">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Auth Screen -->
+  <section id="screen-auth" class="screen">
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1 class="logo-large">AI<span class="gold">Luxe</span></h1>
+        <p class="tagline">The Premier AI Knowledge Experience</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Create Account</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="form-login" class="auth-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="login-email" required placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" required placeholder="Enter your password" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn-primary">Sign In</button>
+        <p id="login-error" class="error-msg"></p>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" class="auth-form hidden">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="reg-name" required placeholder="Your full name" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="reg-email" required placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="reg-password" required placeholder="Min. 6 characters" minlength="6" autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn-primary">Create Account</button>
+        <p id="reg-error" class="error-msg"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Dashboard Screen -->
+  <section id="screen-dashboard" class="screen hidden">
+    <div class="dashboard">
+      <div class="welcome-card">
+        <h2>Welcome back, <span id="dash-name" class="gold"></span></h2>
+        <p>Ready to test your AI knowledge?</p>
+        <button id="btn-start-quiz" class="btn-primary btn-large">Begin Quiz</button>
+      </div>
+
+      <div class="history-section">
+        <h3>Your History</h3>
+        <div id="history-list" class="history-list">
+          <p class="muted">No attempts yet. Take your first quiz!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz Screen -->
+  <section id="screen-quiz" class="screen hidden">
+    <div class="quiz-container">
+      <div class="quiz-progress">
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <span id="quiz-step" class="quiz-step">Question 1 of 3</span>
+      </div>
+
+      <div id="quiz-question" class="quiz-question">
+        <h2 id="q-text"></h2>
+        <div id="q-options" class="options-grid"></div>
+      </div>
+
+      <button id="btn-next" class="btn-primary btn-large hidden">Next Question</button>
+      <button id="btn-submit-quiz" class="btn-primary btn-large hidden">Submit Quiz</button>
+    </div>
+  </section>
+
+  <!-- Results Screen -->
+  <section id="screen-results" class="screen hidden">
+    <div class="results-container">
+      <div class="results-header">
+        <div id="score-ring" class="score-ring">
+          <svg viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="54" class="ring-bg"/>
+            <circle id="ring-progress" cx="60" cy="60" r="54" class="ring-fill"/>
+          </svg>
+          <span id="score-text" class="score-text">0/3</span>
+        </div>
+        <h2 id="results-title">Quiz Complete</h2>
+        <p id="results-subtitle" class="muted"></p>
+      </div>
+
+      <div id="results-breakdown" class="results-breakdown"></div>
+
+      <div class="results-actions">
+        <button id="btn-retry" class="btn-primary">Take Another Quiz</button>
+        <button id="btn-back-dash" class="btn-secondary">Back to Dashboard</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Admin Dashboard Screen -->
+  <section id="screen-admin" class="screen hidden">
+    <div class="admin-container">
+      <div class="admin-header">
+        <h2>Admin <span class="gold">Dashboard</span></h2>
+        <button id="btn-admin-back" class="btn-secondary">Back to Quiz</button>
+      </div>
+
+      <div class="stat-cards">
+        <div class="stat-card">
+          <span class="stat-value" id="stat-users">0</span>
+          <span class="stat-label">Total Users</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-attempts">0</span>
+          <span class="stat-label">Quiz Attempts</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-avg">0%</span>
+          <span class="stat-label">Avg Score</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-perfect">0</span>
+          <span class="stat-label">Perfect Scores</span>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h3>All Users</h3>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Joined</th>
+                <th>Attempts</th>
+                <th>Avg Score</th>
+                <th>Best</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Recent Attempts</h3>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Score</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="admin-attempts-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
