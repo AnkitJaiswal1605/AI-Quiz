@@ -9,7 +9,8 @@ const app = express();
 
 // PostgreSQL connection
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/ai_quiz'
+  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/ai_quiz',
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
 // Create tables on startup
